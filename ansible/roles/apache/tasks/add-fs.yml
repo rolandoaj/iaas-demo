@@ -1,0 +1,53 @@
+--- 
+- name: create partition 
+  parted: 
+    device: /dev/{{ item }} 
+    number: 1 
+    flags: [ lvm ] 
+    state: present 
+  loop: 
+    - sdc 
+    - sdd 
+
+- name: install lvm2 dependency 
+  package: 
+    name: lvm2 
+    state: present 
+ 
+- name: create vg 
+  lvg: 
+    vg: "{{ item.vgn }}" 
+    pvs: /dev/{{ item.disk }} 
+    pesize: 16 
+  loop: 
+    - { vgn: 'code-vg', disk: 'nvme1n1p1' } 
+    - { vgn: 'log-vg', disk: 'nvme2n1p1' } 
+
+- name: create lv 
+  lvol: 
+    vg: "{{ item.vgn }}" 
+    lv: "{{ item.lvn }}" 
+    size: 100%FREE 
+    force: yes 
+
+  loop: 
+    - { vgn: 'code-vg', lvn: 'code-lv' } 
+    - { vgn: 'log-vg', lvn: 'log-lv' } 
+
+- name: format the xfs fs 
+  filesystem: 
+    fstype: xfs 
+    dev: /dev/{{ item.vgn }}/{{ item.lvn }} 
+  loop: 
+    - { vgn: 'code-vg', lvn: 'code-lv' } 
+    - { vgn: 'log-vg', lvn: 'log-lv' } 
+
+- name: mount the lv  
+  mount: 
+    path: /var/{{ item.patha }}/{{ item.pathb }} 
+    src: /dev/{{ item.vgn }}/{{ item.lvn }} 
+    fstype: xfs 
+    state: mounted 
+  loop: 
+    - { vgn: 'code-vg', lvn: 'code-lv', patha: 'www', pathb: 'html' } 
+    - { vgn: 'log-vg', lvn: 'log-lv', patha: 'log', pathb: 'httpd' } 

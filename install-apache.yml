@@ -1,0 +1,40 @@
+--- 
+- hosts: _apache-server 
+  tasks: 
+
+#esperemos a que la instancia esté disponible vía ssh en una espera total de 360 segundo 
+    - name: Wait for system to become reachable 
+      wait_for_connection: 
+      delay: 60 
+      timeout: 300 
+#instalamos dependencias para el uso de tls/ssl 
+    - name: install dependencies 
+      ansible.builtin.yum: 
+        name: gcc 
+        state: latest 
+
+    - name: install dependencies 
+      ansible.builtin.yum: 
+        name: openssl-devel 
+        state: latest 
+ 
+    - name: install dependencies 
+      ansible.builtin.yum: 
+        name: libffi-devel 
+        state: latest 
+
+    - name: install dependencies 
+      ansible.builtin.yum: 
+        name: python-devel 
+        state: latest 
+ 
+    - name: install crypto pip 
+      pip: 
+        state: latest 
+        name:  
+          - pyOpenSSL 
+          - cryptography 
+
+    - name: install apache 
+      ansible.builtin.include_role: 
+        name: apache 
