@@ -11,7 +11,7 @@ url_out(){
     echo "" 
     echo "" 
     echo " ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓" 
-    echo " ▓▒░ You may consult grafana's dashboard in the next url ░▒▓" 
+    echo " ▓▒░       Your Apache url is:                            ░▒▓" 
     echo " ▓ ▓" 
     echo " $gurl" 
     echo "" 

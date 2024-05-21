@@ -12,7 +12,7 @@ variable "INSTA_TYPE" {
 }
 
 variable "AMI_SELECT" {
-  default = " ami-0453898e98046c639"
+  default = "ami-0453898e98046c639"
 }
 
 variable "SIZE_DISK" {
