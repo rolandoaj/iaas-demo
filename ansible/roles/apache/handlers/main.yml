@@ -1,6 +1,6 @@
 --- 
 # handlers file for apache 
-- name: Restart grafana 
+- name: Restart apache
   ansible.builtin.service: 
-    name: grafana-server 
+    name: httpd
     state: restarted 
